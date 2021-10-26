@@ -12,7 +12,7 @@ router = APIRouter()
 mimetypes = {
     'text/turtle': 'turtle',
     'application/ld+json': 'json-ld',
-    # If the client forgot to encode the URL.
+    # Some clients may forget to urlencode the key and lose the '+' character.
     'application/ld json': 'json-ld',
 }
 
@@ -50,4 +50,6 @@ async def lodview(IRI: str, sparql: str, output: str = 'text/turtle'):
         g = Graph()
         g.bind('sh', SH)
         g.parse(data=r.text, format='turtle')
-        return Response(content=g.serialize(format=mimetypes[output]), media_type=output)
+
+        mimetype = mimetypes.get(output, 'text/turtle')
+        return Response(content=g.serialize(format=mimetype), media_type=output)
