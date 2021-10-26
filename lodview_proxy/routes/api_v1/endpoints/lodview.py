@@ -12,6 +12,8 @@ router = APIRouter()
 mimetypes = {
     'text/turtle': 'turtle',
     'application/ld+json': 'json-ld',
+    # If the client forgot to encode the URL.
+    'application/ld json': 'json-ld',
 }
 
 
